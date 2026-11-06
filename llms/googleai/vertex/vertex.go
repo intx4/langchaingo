@@ -220,6 +220,9 @@ func (g *Vertex) generateFromSingleMessage(ctx context.Context, model, systemTex
 	if systemText != "" {
 		config.SystemInstruction = genai.NewContentFromText(systemText, genai.RoleUser)
 	}
+	if opts.JSONMode {
+		config.ResponseMIMEType = "application/json"
+	}
 
 	if opts.StreamingFunc == nil {
 		// When no streaming is requested, just call GenerateContent and return
@@ -278,6 +281,9 @@ func (g *Vertex) generateFromMessages(ctx context.Context, model, systemText str
 	}
 	if systemText != "" {
 		config.SystemInstruction = genai.NewContentFromText(systemText, genai.RoleUser)
+	}
+	if opts.JSONMode {
+		config.ResponseMIMEType = "application/json"
 	}
 
 	chat, err := g.client.Chats.Create(ctx, model, config, history)
